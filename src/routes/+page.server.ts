@@ -2,6 +2,8 @@ import { getDiv1Players } from '$lib/server/tmio';
 import { countCountries } from '$lib/countCountries';
 import { averageRank } from '$lib/averageRank';
 
+export const prerender = true;
+
 export async function load({ fetch }) {
     const div1 = await getDiv1Players(fetch);
     const countryCount = countCountries(div1);
