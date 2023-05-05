@@ -1,9 +1,9 @@
-export interface CotdDivData {
-    results: Result[];
+export interface CompMatch {
+    results: PlayerResult[];
     unit: string;
 }
 
-export interface Result {
+export interface PlayerResult {
     player: Player;
     position: number;
     score: number;

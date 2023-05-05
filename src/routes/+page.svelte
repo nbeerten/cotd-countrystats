@@ -1,6 +1,6 @@
 <script lang="ts">
     export let data;
-    const { title, div1, info, countryCount, averageRankData } = data;
+    const { title, info, test } = data;
 </script>
 
 <h1>Welcome to {title}</h1>
@@ -8,12 +8,12 @@
 
 {info}
 
-<hr>
+<hr />
 <details open>
     <summary>Avg Position</summary>
-    <pre>{JSON.stringify(averageRankData, null, 4)}</pre>
+    <pre>{JSON.stringify(test, null, 4)}</pre>
 </details>
-<hr>
+<!-- <hr>
 <details>
     <summary>Country Count</summary>
     <pre>{JSON.stringify(countryCount, null, 4)}</pre>
@@ -22,4 +22,4 @@
 <details>
     <summary>Div 1</summary>
     <pre>{JSON.stringify(Object.fromEntries(div1), null, 4)}</pre>
-</details>
+</details> -->
