@@ -13,15 +13,12 @@ export interface Zone {
     countryId: string | null; // The ID of the country        (e.g. Germany)
 }
 
-export async function getPlayerZonesFromDB(
-    zonesResponse: ZonesResponse,
-    ...accountIds: string[]
-) {
+export async function getPlayerZonesFromDB(zonesResponse: ZonesResponse, ...accountIds: string[]) {
     const libSQL = createClient({
         url: TURSO_DB_URL,
         authToken: TURSO_DB_AUTH_TOKEN,
     });
-    
+
     const db = drizzle(libSQL);
 
     const NadeoServicesClient = await NadeoServices;
@@ -32,7 +29,7 @@ export async function getPlayerZonesFromDB(
             throw new Error(`Invalid accountId: ${accountId}`);
         }
     });
-    
+
     const accountIdQueue = new Set(accountIds);
     const resultsMap = new Map<string, Zone>();
 

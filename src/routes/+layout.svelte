@@ -14,7 +14,8 @@
 
 <style>
     :global(:root) {
-        --font-satoshi: "Satoshi-Variable", "Satoshi", system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        --font-satoshi: 'Satoshi-Variable', 'Satoshi', system-ui, 'Segoe UI', Roboto, Helvetica,
+            Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
         color-scheme: dark;
     }
 

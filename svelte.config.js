@@ -14,7 +14,7 @@ const config = {
         adapter: adapterVercel({
             runtime: 'edge',
             regions: ['fra1'],
-            split: true
+            split: true,
         }),
     },
 };

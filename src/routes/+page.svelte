@@ -5,8 +5,12 @@
 
 <div class="prose">
     <h1>Welcome to {title}</h1>
-    <p>Hello visitor, (hopefully) human-being, this is currently still a test page... But if you are *really* interested in the 255 best players with their zone IDs of some random COTD, feel free to open the details element below...</p>
-    
+    <p>
+        Hello visitor, (hopefully) human-being, this is currently still a test page... But if you
+        are *really* interested in the 255 best players with their zone IDs of some random COTD,
+        feel free to open the details element below...
+    </p>
+
     {info}
 </div>
 

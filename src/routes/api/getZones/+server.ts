@@ -5,7 +5,7 @@ import { NadeoServices, type ZonesResponse } from '$lib/server/nadeo';
 export const GET: RequestHandler = async () => {
     const NadeoServicesClient = await NadeoServices;
 
-    console.time("/api/getZones");
+    console.time('/api/getZones');
     const NADEO_ZONES = 'NADEO_ZONES';
 
     let zones: ZonesResponse;
@@ -35,7 +35,7 @@ export const GET: RequestHandler = async () => {
         });
     }
 
-    console.timeEnd("/api/getZones");
+    console.timeEnd('/api/getZones');
 
     return new Response(JSON.stringify(zones), {
         headers: {

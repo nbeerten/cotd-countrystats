@@ -18,5 +18,15 @@ export type Audience = 'NadeoServices' | 'NadeoLiveServices' | 'NadeoClubService
 import { createClient } from './createClient';
 import { UBISOFT_EMAIL, UBISOFT_PASSWORD, UA_CONTACT_INFO } from '$env/static/private';
 
-export const NadeoServices = createClient(UBISOFT_EMAIL, UBISOFT_PASSWORD, 'NadeoServices', `cotd-countrystats / (${UA_CONTACT_INFO})`);
-export const NadeoClub = createClient(UBISOFT_EMAIL, UBISOFT_PASSWORD, 'NadeoClubServices', `cotd-countrystats / (${UA_CONTACT_INFO})`);
+export const NadeoServices = createClient(
+    UBISOFT_EMAIL,
+    UBISOFT_PASSWORD,
+    'NadeoServices',
+    `cotd-countrystats / (${UA_CONTACT_INFO})`
+);
+export const NadeoClub = createClient(
+    UBISOFT_EMAIL,
+    UBISOFT_PASSWORD,
+    'NadeoClubServices',
+    `cotd-countrystats / (${UA_CONTACT_INFO})`
+);
