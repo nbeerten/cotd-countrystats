@@ -31,6 +31,9 @@
     },
     "type": "module",
     "dependencies": {
-        "@vercel/kv": "^0.1.1"
+        "@libsql/client": "^0.1.4",
+        "@vercel/kv": "^0.1.1",
+        "drizzle-kit": "^0.17.6",
+        "drizzle-orm": "^0.25.4"
     }
 }

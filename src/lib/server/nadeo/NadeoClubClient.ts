@@ -16,6 +16,10 @@ export class NadeoClubClient extends NadeoClient {
         length = 10,
         offset = 0
     ) {
+        if (length > 255) {
+            throw new Error("`length` must be less than 255 because of Nadeo's API");
+        }
+
         const competitionLeaderboardRes = await fetch(
             `https://competition.trackmania.nadeo.club/api/competitions/${competitionId}/leaderboard?length=${length}&offset=${offset}`,
             {

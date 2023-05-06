@@ -1,7 +1,7 @@
 import { VERCEL_ENV } from '$env/static/private';
 import { createClient } from '$lib/server/nadeo';
-import { getZonesForCompetitionLeaderboard } from '$lib/server/nadeo/data';
 import { UBISOFT_EMAIL, UBISOFT_PASSWORD } from '$env/static/private';
+import { getPlayerZonesFromDB } from '$lib/server/nadeo/util/getPlayerZonesFromDB';
 
 export const prerender = true;
 
@@ -19,15 +19,16 @@ export async function load() {
         'cotd-countrystats / nbeerten@outlook.com'
     );
 
-    const players = await NadeoClub.getCompetitionLeaderboard('5722', 64, 0);
-
-    const playerZones = getZonesForCompetitionLeaderboard(players, NadeoServices);
+    const players = await NadeoClub.getCompetitionLeaderboard('5770', 255, 0);
+    const playerIdList = players.map((player) => player.participant);
 
     const info = `${VERCEL_ENV}`;
+
+    const test = Object.fromEntries(await getPlayerZonesFromDB(NadeoServices, ...playerIdList));
 
     return {
         title: 'Country Stats',
         info,
-        test: playerZones,
+        test,
     };
 }

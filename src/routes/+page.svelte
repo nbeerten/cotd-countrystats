@@ -9,8 +9,8 @@
 {info}
 
 <hr />
-<details open>
-    <summary>Avg Position</summary>
+<details>
+    <summary>Data Test</summary>
     <pre>{JSON.stringify(test, null, 4)}</pre>
 </details>
 <!-- <hr>

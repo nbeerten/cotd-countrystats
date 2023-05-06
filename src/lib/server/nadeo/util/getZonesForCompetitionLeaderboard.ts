@@ -39,6 +39,8 @@ export async function getZonesForCompetitionLeaderboard(
 
     const playerIdList = compPlayers.map((player) => player.participant);
 
+    // console.log(await getPlayerZonesFromDB(NadeoServicesClient, ...playerIdList));
+
     const zonesOfPlayers = await NadeoServicesClient.getPlayerZones(...playerIdList);
 
     const playersWithZoneIds = compPlayers.map((player) => {
@@ -56,24 +58,37 @@ export async function getZonesForCompetitionLeaderboard(
 
         return {
             ...player,
-            zone: getCountryZone(zones, zone.zoneId),
+            zone: getPlayerZones(zones, zone.zoneId),
         };
     });
 
     return playersWithZones;
 }
 
-function getCountryZone(zones: ZonesResponse, zoneId: string): FlatArray<ZonesResponse, 0> | null {
+function getPlayerZones(
+    zones: ZonesResponse,
+    zoneId: string,
+    previous: FlatArray<ZonesResponse, 0>[] = []
+) {
     const zone = zones.find((zone) => zone.zoneId === zoneId);
-    const isCountryRegex = /file:\/\/Media\/Flags\/([A-Z]{3})\.dds/; // TODO: find a better way to do this
-    const isCountryZone = (zone: FlatArray<ZonesResponse, 0>) => isCountryRegex.test(zone.icon);
+    previous.unshift(zone);
 
-    if (isCountryZone(zone)) {
-        return zone;
-    }
     if (!zone.parentId || zone.parentId === zone.zoneId) {
-        return null;
+        const zones = previous.map((zone) => {
+            return {
+                name: zone.name,
+                zoneId: zone.zoneId,
+            };
+        });
+
+        return {
+            world: zones[0] ?? null,
+            continent: zones[1] ?? null,
+            country: zones[2] ?? null,
+            region: zones[3] ?? null,
+            district: zones[4] ?? null,
+        };
     }
 
-    return getCountryZone(zones, zone.parentId);
+    return getPlayerZones(zones, zone.parentId, previous);
 }

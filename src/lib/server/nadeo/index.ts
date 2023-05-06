@@ -6,7 +6,7 @@ export type * from './NadeoServicesClient';
 export { NadeoClubClient } from './NadeoClubClient';
 export type * from './NadeoClubClient';
 
-export * from './data';
+export * from './util';
 
 export interface Tokens {
     accessToken: string;
