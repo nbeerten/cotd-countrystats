@@ -3,6 +3,8 @@ import kv from '@vercel/kv';
 import { NadeoServices, type ZonesResponse } from '$lib/server/nadeo';
 
 export const GET: RequestHandler = async () => {
+    const NadeoServicesClient = await NadeoServices;
+
     console.time("/api/getZones");
     const NADEO_ZONES = 'NADEO_ZONES';
 
@@ -19,14 +21,14 @@ export const GET: RequestHandler = async () => {
             );
 
             kv.del(NADEO_ZONES);
-            zones = await NadeoServices.getZones();
+            zones = await NadeoServicesClient.getZones();
 
             kv.set(NADEO_ZONES, zones, {
                 ex: 60 * 60 * 24 * 7,
             });
         }
     } else {
-        zones = await NadeoServices.getZones();
+        zones = await NadeoServicesClient.getZones();
 
         kv.set(NADEO_ZONES, zones, {
             ex: 60 * 60 * 24 * 7,
