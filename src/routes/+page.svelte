@@ -3,15 +3,20 @@
     const { title, info, test } = data;
 </script>
 
-<h1>Welcome to {title}</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<div class="prose">
+    <h1>Welcome to {title}</h1>
+    <p>Hello visitor, (hopefully) human-being, this is currently still a test page... But if you are *really* interested in the 255 best players with their zone IDs of some random COTD, feel free to open the details element below...</p>
+    
+    {info}
+</div>
 
-{info}
+<hr class="my-2" />
 
-<hr />
-<details>
+<details open>
     <summary>Data Test</summary>
-    <pre>{JSON.stringify(test, null, 4)}</pre>
+    <div class="block border border-stone-700 w-full bg-stone-900 rounded-lg mt-2">
+        <pre class="overflow-y-scroll h-[30rem] p-4">{JSON.stringify(test, null, 4)}</pre>
+    </div>
 </details>
 <!-- <hr>
 <details>

@@ -1,6 +1,25 @@
 import type { Tokens, Audience } from '.';
 import kv from '@vercel/kv';
 
+export type UbisoftAuthResponse = {
+    platformType: string
+    ticket: string
+    twoFactorAuthenticationTicket: string
+    profileId: string
+    userId: string
+    nameOnPlatform: string
+    environment: string
+    expiration: string
+    spaceId: string
+    clientIp: string
+    clientIpCountry: string
+    serverTime: string
+    sessionId: string
+    sessionKey: string
+    rememberMeTicket: string
+  }
+  
+
 export async function getTokens(
     username: string,
     password: string,
@@ -14,7 +33,7 @@ export async function getTokens(
         const tokenFromKv = await kv.get<Tokens>(NADEO_TOKEN);
 
         if (tokenFromKv && 'accessToken' in tokenFromKv && 'refreshToken' in tokenFromKv) {
-            console.trace('Using cached tokens.');
+            console.debug('Using cached tokens.');
             return tokenFromKv;
         } else {
             console.warn(`Failed to use cached tokens because they aren't valid.`);
@@ -64,9 +83,15 @@ export async function getTokens(
                 },
             }
         );
-        const ubisoftTicketJson = (await ubisoftTicketRes.json()) as { ticket: string };
+        const ubisoftTicketJson = (await ubisoftTicketRes.json()) as UbisoftAuthResponse;
+            
+        await kv.set(UBISOFT_PREVENT_RATELIMIT_ENDSAT, Date.now() + 100 * 60 * 2, {
+            ex: 60 * 2 // 2 minutes
+        });
 
-        if ('ticket' in ubisoftTicketJson !== true) {
+        const ubisoftTicketRegex = /^(?:[\w-]*\.){2}[\w-]*$/gm;
+
+        if ('ticket' in ubisoftTicketJson !== true && ubisoftTicketRegex.test(ubisoftTicketJson.ticket)) {
             if('httpCode' in ubisoftTicketJson && (ubisoftTicketJson.httpCode === 429 || ubisoftTicketJson.httpCode === 401)) {
                 await kv.set(UBISOFT_RATELIMIT_ENDSAT, Date.now() + 100 * 60 * 60, {
                     ex: 60 * 60 // 1 hour
@@ -82,13 +107,9 @@ export async function getTokens(
         } else {
             const { ticket } = ubisoftTicketJson;
             ubisoftTicket = ticket;
-            
-            await kv.set(UBISOFT_PREVENT_RATELIMIT_ENDSAT, Date.now() + 100 * 60 * 2, {
-                ex: 60 * 2 // 2 minutes
-            });
 
             await kv.set(UBISOFT_TICKET, ubisoftTicket, {
-                ex: 60 * 60 // 1 hour
+                pxat: new Date(ubisoftTicketJson.expiration).getTime(),
             });
         }
     }
