@@ -10,9 +10,7 @@ export async function getTokens(
     const NADEO_TOKEN = `NADEO_TOKEN_${audience.toUpperCase()}`;
 
     if (kv.exists(NADEO_TOKEN)) {
-        console.time('getTokens from kv');
         const tokenFromKv = await kv.get<Tokens>(NADEO_TOKEN);
-        console.timeEnd('getTokens from kv');
 
         if (tokenFromKv && 'accessToken' in tokenFromKv && 'refreshToken' in tokenFromKv) {
             console.log('Using cached tokens.');
@@ -60,11 +58,9 @@ export async function getTokens(
         throw new Error('Error while retrieving accessToken from Nadeo Services');
     }
 
-    console.time('set token kv');
     kv.set(NADEO_TOKEN, tokens, {
         ex: 60 * 55, // 55 minutes
     });
-    console.timeEnd('set token kv');
 
     return tokens;
 }

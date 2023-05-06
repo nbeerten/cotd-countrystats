@@ -14,3 +14,9 @@ export interface Tokens {
 }
 
 export type Audience = 'NadeoServices' | 'NadeoLiveServices' | 'NadeoClubServices';
+
+import { createClient } from './createClient';
+import { UBISOFT_EMAIL, UBISOFT_PASSWORD, UA_EMAIL } from '$env/static/private';
+
+export const NadeoServices = await createClient(UBISOFT_EMAIL, UBISOFT_PASSWORD, 'NadeoServices', `cotd-countrystats / ${UA_EMAIL}`);
+export const NadeoClub = await createClient(UBISOFT_EMAIL, UBISOFT_PASSWORD, 'NadeoClubServices', `cotd-countrystats / ${UA_EMAIL}`);

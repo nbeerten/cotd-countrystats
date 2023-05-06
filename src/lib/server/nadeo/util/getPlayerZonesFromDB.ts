@@ -3,6 +3,7 @@ import { db } from '$lib/db';
 import { Players, type NewPlayer } from '$lib/db/schema';
 import { inArray } from 'drizzle-orm';
 import kv from '@vercel/kv';
+import { NadeoServices } from '../';
 
 export interface Zone {
     zoneId: string | null; // The ID of most specific zone (usually the district or region)
@@ -11,9 +12,16 @@ export interface Zone {
 }
 
 export async function getPlayerZonesFromDB(
-    NadeoServicesClient: NadeoServicesClient,
+    zonesResponse: ZonesResponse,
     ...accountIds: string[]
 ) {
+    const accountIdRegex = /[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}/;
+    accountIds.forEach((accountId) => {
+        if (!accountIdRegex.test(accountId)) {
+            throw new Error(`Invalid accountId: ${accountId}`);
+        }
+    });
+    
     const accountIdQueue = new Set(accountIds);
     const resultsMap = new Map<string, Zone>();
 
@@ -39,7 +47,7 @@ export async function getPlayerZonesFromDB(
         const databaseBatch = [];
         const newDatabaseBatch: NewPlayer[] = [];
 
-        const zones = await cachedGetZones(NadeoServicesClient);
+        // const zones = await cachedGetZones(NadeoServicesClient);
 
         for (let i = 0; i < Math.ceil(accountIdQueue.size / 200); i++) {
             console.log(
@@ -50,12 +58,12 @@ export async function getPlayerZonesFromDB(
             const offset = i * 200;
             const accountIdQueueArray = Array.from(accountIdQueue);
             const groupOfAccountIds = accountIdQueueArray.slice(offset, offset + 200);
-            const res = await NadeoServicesClient.getPlayerZones(...groupOfAccountIds);
+            const res = await NadeoServices.getPlayerZones(...groupOfAccountIds);
 
             res.forEach((player) => {
                 accountIdQueue.delete(player.accountId);
 
-                const playerZones = getPlayerZones(zones, player.zoneId);
+                const playerZones = getAllZonesForZoneId(zonesResponse, player.zoneId);
 
                 const newPlayerZones: Zone = {
                     zoneId: player.zoneId,
@@ -126,7 +134,7 @@ export async function cachedGetZones(NadeoServicesClient: NadeoServicesClient) {
     return zones;
 }
 
-function getPlayerZones(
+function getAllZonesForZoneId(
     zones: ZonesResponse,
     zoneId: string,
     previous: string[] = []
@@ -150,5 +158,5 @@ function getPlayerZones(
         };
     }
 
-    return getPlayerZones(zones, zoneObj(zoneId).parentId, previous);
+    return getAllZonesForZoneId(zones, zoneObj(zoneId).parentId, previous);
 }
