@@ -1,9 +1,11 @@
 import type { ZonesResponse, NadeoServicesClient } from '../';
-import { db } from '$lib/db';
 import { Players, type NewPlayer } from '$lib/db/schema';
 import { inArray } from 'drizzle-orm';
 import kv from '@vercel/kv';
 import { NadeoServices } from '../';
+import { createClient } from '@libsql/client/web';
+import { TURSO_DB_URL, TURSO_DB_AUTH_TOKEN } from '$env/static/private';
+import { drizzle } from 'drizzle-orm/libsql';
 
 export interface Zone {
     zoneId: string | null; // The ID of most specific zone (usually the district or region)
@@ -15,6 +17,13 @@ export async function getPlayerZonesFromDB(
     zonesResponse: ZonesResponse,
     ...accountIds: string[]
 ) {
+    const libSQL = createClient({
+        url: TURSO_DB_URL,
+        authToken: TURSO_DB_AUTH_TOKEN,
+    });
+    
+    const db = drizzle(libSQL);
+
     const NadeoServicesClient = await NadeoServices;
 
     const accountIdRegex = /[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}/;
