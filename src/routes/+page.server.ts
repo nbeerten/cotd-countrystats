@@ -3,7 +3,9 @@ import { getPlayerZonesFromDB } from '$lib/server/nadeo/util/getPlayerZonesFromD
 import { NadeoClub, type ZonesResponse } from '$lib/server/nadeo';
 
 export async function load({ fetch }) {
-    const players = await NadeoClub.getCompetitionLeaderboard('5770', 255, 0);
+    const NadeoClubClient = await NadeoClub;
+    
+    const players = await NadeoClubClient.getCompetitionLeaderboard('5770', 255, 0);
     const playerIdList = players.map((player) => player.participant);
 
     const info = `${VERCEL_ENV}`;

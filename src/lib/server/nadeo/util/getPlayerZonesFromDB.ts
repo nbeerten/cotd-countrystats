@@ -15,6 +15,8 @@ export async function getPlayerZonesFromDB(
     zonesResponse: ZonesResponse,
     ...accountIds: string[]
 ) {
+    const NadeoServicesClient = await NadeoServices;
+
     const accountIdRegex = /[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}/;
     accountIds.forEach((accountId) => {
         if (!accountIdRegex.test(accountId)) {
@@ -58,7 +60,7 @@ export async function getPlayerZonesFromDB(
             const offset = i * 200;
             const accountIdQueueArray = Array.from(accountIdQueue);
             const groupOfAccountIds = accountIdQueueArray.slice(offset, offset + 200);
-            const res = await NadeoServices.getPlayerZones(...groupOfAccountIds);
+            const res = await NadeoServicesClient.getPlayerZones(...groupOfAccountIds);
 
             res.forEach((player) => {
                 accountIdQueue.delete(player.accountId);
