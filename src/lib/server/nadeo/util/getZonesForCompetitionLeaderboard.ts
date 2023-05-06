@@ -39,8 +39,6 @@ export async function getZonesForCompetitionLeaderboard(
 
     const playerIdList = compPlayers.map((player) => player.participant);
 
-    // console.log(await getPlayerZonesFromDB(NadeoServicesClient, ...playerIdList));
-
     const zonesOfPlayers = await NadeoServicesClient.getPlayerZones(...playerIdList);
 
     const playersWithZoneIds = compPlayers.map((player) => {

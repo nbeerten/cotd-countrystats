@@ -14,7 +14,7 @@ export async function getTokens(
         const tokenFromKv = await kv.get<Tokens>(NADEO_TOKEN);
 
         if (tokenFromKv && 'accessToken' in tokenFromKv && 'refreshToken' in tokenFromKv) {
-            console.log('Using cached tokens.');
+            console.trace('Using cached tokens.');
             return tokenFromKv;
         } else {
             console.warn(`Failed to use cached tokens because they aren't valid.`);
