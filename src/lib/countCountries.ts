@@ -1,16 +1,19 @@
-// import type { getDiv1PlayerZones } from '$lib/server/tmio';
+import type { getPlayerZonesFromDB } from '$lib/server/nadeo/util/getPlayerZonesFromDB';
+import type { ZonesResponse } from '$lib/server/nadeo';
+import { getZoneNamesFromID } from '$lib/server/nadeo/util/getZoneNamesFromID';
 
-// export function countCountries(players: Awaited<ReturnType<typeof getDiv1PlayerZones>>) {
-//     const countryCount: Record<string, number> = {};
+export function countCountries(zonesResponse: ZonesResponse, playersWithZones: Awaited<ReturnType<typeof getPlayerZonesFromDB>>) {
+    const countryCount: Record<string, number> = {};
+    for (const [, player] of playersWithZones.entries()) {
+        const playerZones = getZoneNamesFromID(zonesResponse, player.zoneId);
 
-//     players.forEach((player) => {
-//         const country = player.country;
-//         countryCount[country] = (countryCount[country] || 0) + 1;
-//     });
+        const country = playerZones.country.name;
+        countryCount[country] = (countryCount[country] || 0) + 1;
+    }
 
-//     const sortedCountries = Object.entries(countryCount)
-//         .sort((a, b) => b[1] - a[1])
-//         .reduce((result, [key, value]) => ({ ...result, [key]: value }), {});
+    const sortedCountries: Record<string, number> = Object.entries(countryCount)
+        .sort((a, b) => b[1] - a[1])
+        .reduce((result, [key, value]) => ({ ...result, [key]: value }), {});
 
-//     return sortedCountries;
-// }
+    return sortedCountries;
+}

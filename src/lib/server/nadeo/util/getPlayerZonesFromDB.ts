@@ -1,7 +1,5 @@
-import type { ZonesResponse, NadeoServicesClient } from '../';
 import { Players, type NewPlayer } from '$lib/db/schema';
 import { inArray } from 'drizzle-orm';
-import kv from '@vercel/kv';
 import { NadeoServices } from '../';
 import { createClient } from '@libsql/client/web';
 import { TURSO_DB_URL, TURSO_DB_AUTH_TOKEN } from '$env/static/private';
@@ -9,11 +7,11 @@ import { drizzle } from 'drizzle-orm/libsql';
 
 export interface Zone {
     zoneId: string | null; // The ID of most specific zone (usually the district or region)
-    continentId: string | null; // The ID of the continent      (e.g. Europe)
-    countryId: string | null; // The ID of the country        (e.g. Germany)
+    // continentId: string | null; // The ID of the continent      (e.g. Europe)
+    // countryId: string | null; // The ID of the country        (e.g. Germany)
 }
 
-export async function getPlayerZonesFromDB(zonesResponse: ZonesResponse, ...accountIds: string[]) {
+export async function getPlayerZonesFromDB(...accountIds: string[]) {
     const libSQL = createClient({
         url: TURSO_DB_URL,
         authToken: TURSO_DB_AUTH_TOKEN,
@@ -34,20 +32,21 @@ export async function getPlayerZonesFromDB(zonesResponse: ZonesResponse, ...acco
     const resultsMap = new Map<string, Zone>();
 
     const resnew = await db
-        .select()
+        .select({
+            accountId: Players.accountId,
+            zoneId: Players.zoneId,
+        })
         .from(Players)
         .where(inArray(Players.accountId, accountIds))
         .all();
 
     for (const row of resnew) {
-        const { accountId, zoneId, continentId, countryId } = row;
+        const { accountId, zoneId } = row;
 
         accountIdQueue.delete(accountId);
 
         resultsMap.set(accountId, {
             zoneId,
-            continentId,
-            countryId,
         });
     }
 
@@ -55,13 +54,11 @@ export async function getPlayerZonesFromDB(zonesResponse: ZonesResponse, ...acco
         const databaseBatch = [];
         const newDatabaseBatch: NewPlayer[] = [];
 
-        // const zones = await cachedGetZones(NadeoServicesClient);
-
         for (let i = 0; i < Math.ceil(accountIdQueue.size / 200); i++) {
             console.log(
-                `Had to retrieve ${accountIdQueue.size} account from Nadeo. ${i}/${Math.ceil(
+                `Had to retrieve ${accountIdQueue.size} account from Nadeo. ${Math.ceil(
                     accountIdQueue.size / 200
-                )} requests done`
+                )} requests left`
             );
             const offset = i * 200;
             const accountIdQueueArray = Array.from(accountIdQueue);
@@ -71,12 +68,12 @@ export async function getPlayerZonesFromDB(zonesResponse: ZonesResponse, ...acco
             res.forEach((player) => {
                 accountIdQueue.delete(player.accountId);
 
-                const playerZones = getAllZonesForZoneId(zonesResponse, player.zoneId);
+                // const playerZones = getAllZonesForZoneId(zonesResponse, player.zoneId);
 
                 const newPlayerZones: Zone = {
                     zoneId: player.zoneId,
-                    continentId: playerZones.continentId,
-                    countryId: playerZones.countryId,
+                    // continentId: playerZones.continentId,
+                    // countryId: playerZones.countryId,
                 };
 
                 resultsMap.set(player.accountId, newPlayerZones);
@@ -92,79 +89,18 @@ export async function getPlayerZonesFromDB(zonesResponse: ZonesResponse, ...acco
                 const newPlayer: NewPlayer = {
                     accountId: player.accountId,
                     zoneId: newPlayerZones.zoneId,
-                    continentId: newPlayerZones.continentId,
-                    countryId: newPlayerZones.countryId,
+                    // continentId: newPlayerZones.continentId,
+                    // countryId: newPlayerZones.countryId,
                 };
 
                 newDatabaseBatch.push(newPlayer);
             });
         }
 
-        // const dbInsert = await dbraw.batch(databaseBatch);
-        db.insert(Players)
+        await db.insert(Players)
             .values([...newDatabaseBatch])
             .run();
     }
 
     return resultsMap;
-}
-
-export async function cachedGetZones(NadeoServicesClient: NadeoServicesClient) {
-    const NADEO_ZONES = 'NADEO_ZONES';
-
-    let zones: ZonesResponse;
-    if (kv.exists(NADEO_ZONES)) {
-        const zonesRes = await kv.get<ZonesResponse>(NADEO_ZONES);
-
-        if (zonesRes && 'zoneId' in zonesRes[0]) {
-            console.debug('Using cached zones.');
-            zones = zonesRes;
-        } else {
-            console.warn(
-                `Failed to use cached zones. Missing 'zoneId' from vercel KV stored ${NADEO_ZONES} key.`
-            );
-
-            kv.del(NADEO_ZONES);
-            zones = await NadeoServicesClient.getZones();
-
-            kv.set(NADEO_ZONES, zones, {
-                ex: 60 * 60 * 24 * 7,
-            });
-        }
-    } else {
-        zones = await NadeoServicesClient.getZones();
-
-        kv.set(NADEO_ZONES, zones, {
-            ex: 60 * 60 * 24 * 7,
-        });
-    }
-
-    return zones;
-}
-
-function getAllZonesForZoneId(
-    zones: ZonesResponse,
-    zoneId: string,
-    previous: string[] = []
-): {
-    worldId: string;
-    continentId: string;
-    countryId: string;
-    regionId: string;
-    districtId: string;
-} {
-    const zoneObj = (findZoneId: string) => zones.find((zone) => zone.zoneId === findZoneId);
-    previous.unshift(zoneId);
-
-    if (!zoneObj(zoneId).parentId || zoneObj(zoneId).parentId === zoneObj(zoneId).zoneId) {
-        return {
-            worldId: previous[0] ?? null,
-            continentId: previous[1] ?? null,
-            countryId: previous[2] ?? null,
-            regionId: previous[3] ?? null,
-            districtId: previous[4] ?? null,
-        };
-    }
-
-    return getAllZonesForZoneId(zones, zoneObj(zoneId).parentId, previous);
 }

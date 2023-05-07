@@ -9,7 +9,7 @@ export const GET: RequestHandler = async () => {
     const NADEO_ZONES = 'NADEO_ZONES';
 
     let zones: ZonesResponse;
-    if (kv.exists(NADEO_ZONES)) {
+    if (await kv.exists(NADEO_ZONES)) {
         const zonesRes = await kv.get<ZonesResponse>(NADEO_ZONES);
 
         if (zonesRes && 'zoneId' in zonesRes[0]) {
@@ -20,17 +20,17 @@ export const GET: RequestHandler = async () => {
                 `Failed to use cached zones. Missing 'zoneId' from vercel KV stored ${NADEO_ZONES} key.`
             );
 
-            kv.del(NADEO_ZONES);
+            await kv.del(NADEO_ZONES);
             zones = await NadeoServicesClient.getZones();
 
-            kv.set(NADEO_ZONES, zones, {
+            await kv.set(NADEO_ZONES, zones, {
                 ex: 60 * 60 * 24 * 7,
             });
         }
     } else {
         zones = await NadeoServicesClient.getZones();
 
-        kv.set(NADEO_ZONES, zones, {
+        await kv.set(NADEO_ZONES, zones, {
             ex: 60 * 60 * 24 * 7,
         });
     }
