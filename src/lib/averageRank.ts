@@ -5,7 +5,7 @@ export function averageRank(players: Awaited<ReturnType<typeof combineLeaderboar
 
     players.forEach((player, i) => {
         const country = player.country;
-        if(country) {
+        if (country) {
             countryCount[country.name] = [...(countryCount[country.name] || []), i + 1];
         }
     });

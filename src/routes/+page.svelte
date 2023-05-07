@@ -29,10 +29,7 @@
 <div class="w-full md:w-[32ch]">
     <div class="flex flex-col gap-2">
         {#each cotdList as cotd, i}
-            <div
-                class="flex gap-2 justify-between items-center"
-                data-sveltekit-preload-data="tap"
-            >
+            <div class="flex gap-2 justify-between items-center" data-sveltekit-preload-data="tap">
                 <div>
                     <h2 class="text-[1.05em]">
                         <span class="tabular-nums font-medium">{cotd.date}</span>

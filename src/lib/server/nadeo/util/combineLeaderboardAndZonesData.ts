@@ -25,7 +25,7 @@ export function combineLeaderboardAndZonesData(
     const playerZonesObject = Object.fromEntries(playerZonesFromDB);
 
     playerLeaderboardAndZone.forEach((player) => {
-        if(!playerZonesObject[player.participant]) {
+        if (!playerZonesObject[player.participant]) {
             player.world = null;
             player.continent = null;
             player.country = null;
