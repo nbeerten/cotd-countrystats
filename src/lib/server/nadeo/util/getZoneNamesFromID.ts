@@ -1,4 +1,4 @@
-import type { ZonesResponse } from "..";
+import type { ZonesResponse } from '..';
 
 export interface ParsedPlayerZone {
     zoneId: string;

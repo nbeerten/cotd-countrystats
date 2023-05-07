@@ -8,16 +8,16 @@ export type PlayerLeaderboardAndZone = {
     rank: number;
     score: number;
     zone: string;
-    world?: ParsedPlayerZone|null;
-    continent?: ParsedPlayerZone|null;
-    country?: ParsedPlayerZone|null;
-    region?: ParsedPlayerZone|null;
-    district?: ParsedPlayerZone|null;
+    world?: ParsedPlayerZone | null;
+    continent?: ParsedPlayerZone | null;
+    country?: ParsedPlayerZone | null;
+    region?: ParsedPlayerZone | null;
+    district?: ParsedPlayerZone | null;
 }[];
 
 export function combineLeaderboardAndZonesData(
     zonesResponse: ZonesResponse,
-    fullCompetitionLeaderboard: Awaited<ReturnType<typeof getFullCompetitionLeaderboard>>, 
+    fullCompetitionLeaderboard: Awaited<ReturnType<typeof getFullCompetitionLeaderboard>>,
     playerZonesFromDB: Awaited<ReturnType<typeof getPlayerZonesFromDB>>
 ) {
     const playerLeaderboardAndZone: PlayerLeaderboardAndZone = fullCompetitionLeaderboard;
@@ -25,7 +25,10 @@ export function combineLeaderboardAndZonesData(
     const playerZonesObject = Object.fromEntries(playerZonesFromDB);
 
     playerLeaderboardAndZone.forEach((player) => {
-        const zoneNames = getZoneNamesFromID(zonesResponse, playerZonesObject[player.participant].zoneId);
+        const zoneNames = getZoneNamesFromID(
+            zonesResponse,
+            playerZonesObject[player.participant].zoneId
+        );
         player.world = zoneNames.world;
         player.continent = zoneNames.continent;
         player.country = zoneNames.country;

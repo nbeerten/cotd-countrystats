@@ -8,10 +8,12 @@ export function averageRank(players: Awaited<ReturnType<typeof combineLeaderboar
         countryCount[country.name] = [...(countryCount[country.name] || []), i + 1];
     });
 
-    const calcAvgs: Record<string, number> = Object.entries(countryCount).map(([key, value]) => {
-        const avg = value.reduce((a, b) => a + b, 0) / value.length;
-        return [key, avg];
-    }).reduce((result, [key, value]) => ({ ...result, [key]: value }), {});
+    const calcAvgs: Record<string, number> = Object.entries(countryCount)
+        .map(([key, value]) => {
+            const avg = value.reduce((a, b) => a + b, 0) / value.length;
+            return [key, avg];
+        })
+        .reduce((result, [key, value]) => ({ ...result, [key]: value }), {});
 
     const sortedCountries = Object.entries(calcAvgs)
         .sort((a, b) => a[1] - b[1])

@@ -2,7 +2,10 @@ import type { getPlayerZonesFromDB } from '$lib/server/nadeo/util/getPlayerZones
 import type { ZonesResponse } from '$lib/server/nadeo';
 import { getZoneNamesFromID } from '$lib/server/nadeo/util/getZoneNamesFromID';
 
-export function countCountries(zonesResponse: ZonesResponse, playersWithZones: Awaited<ReturnType<typeof getPlayerZonesFromDB>>) {
+export function countCountries(
+    zonesResponse: ZonesResponse,
+    playersWithZones: Awaited<ReturnType<typeof getPlayerZonesFromDB>>
+) {
     const countryCount: Record<string, number> = {};
     for (const [, player] of playersWithZones.entries()) {
         const playerZones = getZoneNamesFromID(zonesResponse, player.zoneId);

@@ -5,10 +5,10 @@
 
 <div class="prose prose-invert">
     <h1>Welcome to {title}</h1>
-    
+
     <p>
-        Hello visitor, this is currently still a test page... But if you
-        are *really* interested in this, free to open the details element below...
+        Hello visitor, this is currently still a test page... But if you are *really* interested in
+        this, free to open the details element below...
     </p>
 
     <h2>Data</h2>

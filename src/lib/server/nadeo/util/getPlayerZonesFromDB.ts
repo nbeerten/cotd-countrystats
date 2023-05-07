@@ -97,7 +97,8 @@ export async function getPlayerZonesFromDB(...accountIds: string[]) {
             });
         }
 
-        await db.insert(Players)
+        await db
+            .insert(Players)
             .values([...newDatabaseBatch])
             .run();
     }
