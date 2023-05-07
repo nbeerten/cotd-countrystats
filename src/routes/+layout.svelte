@@ -6,7 +6,7 @@
 </script>
 
 <main class="font-sans shell-max-w-center">
-    {#if /\/[0-9]?/.test($page.url.pathname)}
+    {#if /^\/[0-9]*$/.test($page.url.pathname)}
         <div class="mb-2 flex gap-2 font-medium">
             <a href="/" class="underline">Home</a>
         </div>
