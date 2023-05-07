@@ -36,7 +36,9 @@
         "@libsql/client": "^0.1.4",
         "@unocss/reset": "^0.51.12",
         "@vercel/kv": "^0.1.1",
+        "chart.js": "^4.3.0",
         "drizzle-kit": "^0.17.6",
-        "drizzle-orm": "^0.25.4"
+        "drizzle-orm": "^0.25.4",
+        "svelte-chartjs": "^3.1.2"
     }
 }

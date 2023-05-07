@@ -68,7 +68,9 @@ export async function getPlayerZonesFromDB(...accountIds: string[]) {
             res.forEach((player) => {
                 accountIdQueue.delete(player.accountId);
 
-                // const playerZones = getAllZonesForZoneId(zonesResponse, player.zoneId);
+                if(!player.zoneId) {
+                    console.log(player);
+                }
 
                 const newPlayerZones: Zone = {
                     zoneId: player.zoneId,

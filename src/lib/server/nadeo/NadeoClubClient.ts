@@ -7,7 +7,35 @@ export type CompetitionLeaderboardResponse = {
     zone: string;
 }[];
 
-export type CompetitionResponse = unknown;
+export type CompetitionResponse = {
+    id: number;
+    liveId: string;
+    creator: string;
+    name: string;
+    participantType: string;
+    description: string;
+    registrationStart: unknown;
+    registrationEnd: unknown;
+    startDate: number;
+    endDate: number;
+    matchesGenerationDate: number;
+    nbPlayers: number;
+    spotStructure: string;
+    leaderboardId: number;
+    manialink: unknown;
+    rulesUrl: string | null;
+    streamUrl: string | null;
+    websiteUrl: string | null;
+    logoUrl: string | null;
+    verticalUrl: string | null;
+    allowedZones: Array<string>;
+    deletedOn: unknown;
+    autoNormalizeSeeds: boolean;
+    region: string;
+    autoGetParticipantSkillLevel: string;
+    matchAutoMode: string;
+    partition: string;
+};
 export type CompetitionRoundsResponse = unknown;
 
 export class NadeoClubClient extends NadeoClient {

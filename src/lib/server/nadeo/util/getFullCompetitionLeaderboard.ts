@@ -3,9 +3,14 @@ import type { NadeoClubClient, CompetitionLeaderboardResponse } from '..';
 export async function getFullCompetitionLeaderboard(
     NadeoClub: NadeoClubClient,
     competitionId: string | number,
-    length = 10,
+    length: number|'all' = 10,
     offset = 0
 ) {
+    if(length === 'all') {
+        const competitionInformation = await NadeoClub.getCompetition(competitionId);
+        length = competitionInformation.nbPlayers;
+    }
+
     const iterationsNeeded = Math.ceil(length / 255);
 
     const playerSet = new Set<FlatArray<CompetitionLeaderboardResponse, 0>>();
@@ -21,6 +26,11 @@ export async function getFullCompetitionLeaderboard(
             IDsLeft,
             offset + i * 255
         );
+
+        if(iterationPlayers.length === 0) {
+            throw new Error(`No players found for competition with ID: ${competitionId}`);
+        }
+        
         for (const player of iterationPlayers) {
             playerSet.add(player);
         }
