@@ -68,10 +68,6 @@ export async function getPlayerZonesFromDB(...accountIds: string[]) {
             res.forEach((player) => {
                 accountIdQueue.delete(player.accountId);
 
-                if(!player.zoneId) {
-                    console.log(player);
-                }
-
                 const newPlayerZones: Zone = {
                     zoneId: player.zoneId,
                     // continentId: playerZones.continentId,
@@ -97,6 +93,10 @@ export async function getPlayerZonesFromDB(...accountIds: string[]) {
 
                 newDatabaseBatch.push(newPlayer);
             });
+
+            if(i !== Math.ceil(accountIdQueue.size / 200) - 1) {
+                await new Promise(r => setTimeout(r, 500));
+            }
         }
 
         await db

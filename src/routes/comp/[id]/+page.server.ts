@@ -1,6 +1,4 @@
-import { getPlayerZonesFromDB } from '$lib/server/nadeo/util/getPlayerZonesFromDB';
-import { getFullCompetitionLeaderboard } from '$lib/server/nadeo/util/getFullCompetitionLeaderboard';
-import { combineLeaderboardAndZonesData } from '$lib/server/nadeo/util/combineLeaderboardAndZonesData.js';
+import { getPlayerZonesFromDB, getFullCompetitionLeaderboard, combineLeaderboardAndZonesData } from '$lib/server/nadeo/util';
 import { countCountries } from '$lib/countCountries';
 import { averageRank } from '$lib/averageRank';
 import { NadeoClub, type ZonesResponse } from '$lib/server/nadeo';
@@ -8,11 +6,11 @@ import { error } from '@sveltejs/kit';
 
 export async function load({ fetch, params }) {
     const id = params.id;
-    
-    if(!/^[0-9]+$/.test(id)){
+
+    if (!/^[0-9]+$/.test(id)) {
         throw error(400, "ID must be a number");
     }
-    
+
     const zonesResponse = (await fetch('/api/getZones').then((res) => res.json())) as ZonesResponse;
 
     const streamedData = async () => {

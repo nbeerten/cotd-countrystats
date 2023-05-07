@@ -1,11 +1,13 @@
-import type { combineLeaderboardAndZonesData } from '$lib/server/nadeo/util/combineLeaderboardAndZonesData';
+import type { combineLeaderboardAndZonesData } from '$lib/server/nadeo/util';
 
 export function averageRank(players: Awaited<ReturnType<typeof combineLeaderboardAndZonesData>>) {
     const countryCount: Record<string, number[]> = {};
 
     players.forEach((player, i) => {
         const country = player.country;
-        countryCount[country.name] = [...(countryCount[country.name] || []), i + 1];
+        if(country) {
+            countryCount[country.name] = [...(countryCount[country.name] || []), i + 1];
+        }
     });
 
     const calcAvgs: Record<string, number> = Object.entries(countryCount)

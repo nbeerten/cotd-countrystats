@@ -1,6 +1,5 @@
-import type { getPlayerZonesFromDB } from '$lib/server/nadeo/util/getPlayerZonesFromDB';
 import type { ZonesResponse } from '$lib/server/nadeo';
-import { getZoneNamesFromID } from '$lib/server/nadeo/util/getZoneNamesFromID';
+import { getZoneNamesFromID, type getPlayerZonesFromDB } from '$lib/server/nadeo/util';
 
 export function countCountries(
     zonesResponse: ZonesResponse,

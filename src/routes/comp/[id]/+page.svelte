@@ -6,12 +6,17 @@
     const { streamed, id } = data;
 </script>
 
-<div class="my-12">
+<div>
     {#await streamed.data}
-        <h3 class="text-xl font-bold">Loading data for competition {id}...</h3>
+        <h1 class="text-4xl font-bold">
+            Loading data for competition {id}...
+        </h1>
+        <p class="text-lg font-medium">Might take a couple of seconds to load...</p>
     {:then data}
-        <h3 class="text-xl font-bold">{data.compInfo.name}</h3>
-        <p>{data.compInfo.nbPlayers} players total.</p>
+        <h1 class="text-4xl font-bold">
+            {data.compInfo.name}
+        </h1>
+        <p class="text-lg font-medium">{data.compInfo.nbPlayers} players total.</p>
 
         <!-- <Pie data={data.countryCount} /> -->
 
