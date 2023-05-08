@@ -1,10 +1,17 @@
 <script lang="ts">
-    // import { Pie } from "svelte-chartjs";
-    // import type { ChartData } from "chart.js";
+    import PieChart from '$lib/components/PieChart.svelte';
 
     export let data;
     const { id, streamed } = data;
 </script>
+
+<svelte:head>
+    {#await streamed.data}
+        <title>Competition #{id} - COTD Countrystats</title>
+    {:then data}
+        <title>{data.compInfo.name} - COTD Countrystats</title>
+    {/await}
+</svelte:head>
 
 <div>
     {#await streamed.data}
@@ -18,25 +25,9 @@
         </h1>
         <p class="text-lg font-medium">{data.compInfo.nbPlayers} players total.</p>
 
-        <!-- <Pie data={data.countryCount} /> -->
-
-        <details open class="my-4">
-            <summary>Amount of players / country</summary>
-            <div class="block border border-stone-700 w-full bg-stone-900 rounded-lg mt-2">
-                <p class="overflow-y-scroll h-[30rem] p-4 whitespace-break-spaces font-mono">
-                    {JSON.stringify(data.countryCount, null, 4)}
-                </p>
-            </div>
-        </details>
-
-        <details class="my-4">
-            <summary>Average rank of a country</summary>
-            <div class="block border border-stone-700 w-full bg-stone-900 rounded-lg mt-2">
-                <p class="overflow-y-scroll h-[30rem] p-4 whitespace-break-spaces font-mono">
-                    {JSON.stringify(data.averageRankData, null, 4)}
-                </p>
-            </div>
-        </details>
+        <div class="flex flex-col md:flex-row w-full h-[70vh] my-8">
+            <PieChart class="w-full" data={data.countryCount} label="Players" />
+        </div>
     {:catch error}
         <p>Something went wrong...</p>
         <p class="text-2xl font-bold">{error.message}</p>

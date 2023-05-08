@@ -17,7 +17,7 @@ export function averageRank(players: Awaited<ReturnType<typeof combineLeaderboar
         })
         .reduce((result, [key, value]) => ({ ...result, [key]: value }), {});
 
-    const sortedCountries = Object.entries(calcAvgs)
+    const sortedCountries: Record<string, number> = Object.entries(calcAvgs)
         .sort((a, b) => a[1] - b[1])
         .reduce((result, [key, value]) => ({ ...result, [key]: value }), {});
 

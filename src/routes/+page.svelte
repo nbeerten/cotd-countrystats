@@ -4,7 +4,7 @@
     import { goto } from '$app/navigation';
 
     export let data;
-    $: cotdList = data.cotdList;
+    $: streamed = data.streamed;
 
     function previousPage() {
         goto(`?page=${Number($page.url.searchParams.get('page') || 1) - 1}`);
@@ -32,27 +32,36 @@
 
 <div class="w-full md:w-[32ch]">
     <div class="flex flex-col gap-2">
-        {#each cotdList as cotd, i}
-            <div class="flex gap-2 justify-between items-center" data-sveltekit-preload-data="tap">
-                <div>
-                    <h2 class="text-[1.05em]">
-                        <span class="tabular-nums font-medium">{cotd.date}</span>
-                        <span class="ml-2 text-stone-400">{relativeTimeFromDates(cotd.time)}</span>
-                    </h2>
-                    <p>
-                        <span class:text-amber-300={cotd.type === 'Main'}>{cotd.type}</span>
-                        | {cotd.nbPlayers} players
-                    </p>
-                </div>
-                <a
-                    href="/comp/{cotd.id}"
-                    class="bg-stone-900 border border-white/10 px-2 py-1 rounded">Info</a
+        {#await streamed.data}
+            <p>Loading data...</p>
+        {:then data}
+            {#each data.cotdList as cotd, i}
+                <div
+                    class="flex gap-2 justify-between items-center h-[2.05lh]"
+                    data-sveltekit-preload-data="tap"
                 >
-            </div>
-            {#if i < cotdList.length - 1}
-                <hr class="border-white/10 border-0 border-b" />
-            {/if}
-        {/each}
+                    <div>
+                        <h2 class="text-[1.05em]">
+                            <span class="tabular-nums font-medium">{cotd.date}</span>
+                            <span class="ml-2 text-stone-400"
+                                >{relativeTimeFromDates(cotd.time)}</span
+                            >
+                        </h2>
+                        <p>
+                            <span class:text-amber-300={cotd.type === 'Main'}>{cotd.type}</span>
+                            | {cotd.nbPlayers} players
+                        </p>
+                    </div>
+                    <a
+                        href="/comp/{cotd.id}"
+                        class="bg-stone-900 border border-white/10 px-2 py-1 rounded">Info</a
+                    >
+                </div>
+                {#if i < data.cotdList.length - 1}
+                    <hr class="border-white/10 border-0 border-b" />
+                {/if}
+            {/each}
+        {/await}
     </div>
 
     <div class="mt-2 flex gap-4 justify-between">

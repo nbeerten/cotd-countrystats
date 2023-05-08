@@ -1,6 +1,9 @@
 lockfileVersion: '6.0'
 
 dependencies:
+  '@krowten/svelte-heroicons':
+    specifier: ^0.1.0
+    version: 0.1.0
   '@libsql/client':
     specifier: ^0.1.4
     version: 0.1.4
@@ -10,18 +13,12 @@ dependencies:
   '@vercel/kv':
     specifier: ^0.1.2
     version: 0.1.2
-  chart.js:
-    specifier: ^4.3.0
-    version: 4.3.0
   drizzle-kit:
     specifier: ^0.17.6
     version: 0.17.6
   drizzle-orm:
     specifier: ^0.25.4
     version: 0.25.4(@libsql/client@0.1.4)
-  svelte-chartjs:
-    specifier: ^3.1.2
-    version: 3.1.2(chart.js@4.3.0)(svelte@3.59.0)
   zod:
     specifier: ^3.21.4
     version: 3.21.4
@@ -36,6 +33,9 @@ devDependencies:
   '@sveltejs/kit':
     specifier: ^1.16.2
     version: 1.16.2(svelte@3.59.0)(vite@4.3.5)
+  '@types/chart.js':
+    specifier: ^2.9.37
+    version: 2.9.37
   '@typescript-eslint/eslint-plugin':
     specifier: ^5.59.2
     version: 5.59.2(@typescript-eslint/parser@5.59.2)(eslint@8.40.0)(typescript@5.0.4)
@@ -45,6 +45,9 @@ devDependencies:
   '@unocss/extractor-svelte':
     specifier: ^0.51.12
     version: 0.51.12
+  chart.js:
+    specifier: ^4.3.0
+    version: 4.3.0
   eslint:
     specifier: ^8.40.0
     version: 8.40.0
@@ -54,6 +57,9 @@ devDependencies:
   eslint-plugin-svelte:
     specifier: ^2.27.4
     version: 2.27.4(eslint@8.40.0)(svelte@3.59.0)
+  lucide-svelte:
+    specifier: ^0.214.0
+    version: 0.214.0(svelte@3.59.0)
   prettier:
     specifier: ^2.8.8
     version: 2.8.8
@@ -428,9 +434,16 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.14
     dev: true
 
+  /@krowten/svelte-heroicons@0.1.0:
+    resolution: {integrity: sha512-GCe6LbSwje8WlHoVm2OoJl30sWBXgnJuJnVJ89L9tHuA3d7OHS+3Tgcmw7jJMgFQ1fBiB+OC6f2+uLgiV/jQ5w==}
+    engines: {node: '>=14.0.0'}
+    dependencies:
+      heroicons: 2.0.17
+    dev: false
+
   /@kurkle/color@0.3.2:
     resolution: {integrity: sha512-fuscdXJ9G1qb7W8VdHi+IwRqij3lBkosAm4ydQtEmbY58OzHXqQhvlxqEkoz0yssNVn38bcpRWgA9PP+OGoisw==}
-    dev: false
+    dev: true
 
   /@libsql/client@0.1.4:
     resolution: {integrity: sha512-ZkHEIIhAa8dIM3Zbzfs0N2btsh9P27nFd+jHz5H2rgUWXbfZCYQDMDsWUH1x81oqvX3rm2aZKeIChRrnOSrWNw==}
@@ -606,6 +619,12 @@ packages:
       vitefu: 0.2.4(vite@4.3.5)
     transitivePeerDependencies:
       - supports-color
+    dev: true
+
+  /@types/chart.js@2.9.37:
+    resolution: {integrity: sha512-9bosRfHhkXxKYfrw94EmyDQcdjMaQPkU1fH2tDxu8DWXxf1mjzWQAV4laJF51ZbC2ycYwNDvIm1rGez8Bug0vg==}
+    dependencies:
+      moment: 2.29.4
     dev: true
 
   /@types/cookie@0.5.1:
@@ -1194,7 +1213,7 @@ packages:
     engines: {pnpm: '>=7'}
     dependencies:
       '@kurkle/color': 0.3.2
-    dev: false
+    dev: true
 
   /chokidar@3.5.3:
     resolution: {integrity: sha512-Dr3sfKRP6oTcjf2JmUmFJfeVMvXBdegxB0iVQ5eb2V10uFJUCAS8OByZdVAyVb8xXNz3GjjTgj9kLWsZTqE6kw==}
@@ -2183,6 +2202,10 @@ packages:
     resolution: {integrity: sha512-2bsegYkkHO+h/9MGbn6KWcE45cHZgPANo5LXF7EvWdT0yT2EguSVO1nDgU5c8+ZOPwp2vMNa7YFsJhVcDR9Sdg==}
     dev: false
 
+  /heroicons@2.0.17:
+    resolution: {integrity: sha512-9d5HE+YwwBkzDAIwt3x9O4bPmv5UGKrvqP4D/wwMaaKunPQkoI6FQjWXuXZNKGNieW/1+r1nf40bydEIi76jjw==}
+    dev: false
+
   /https-proxy-agent@5.0.1:
     resolution: {integrity: sha512-dFcAjpTQFgoLMzC2VwU+C/CbS7uRL0lWmxDITmqm7C+7F0Odmj6s9l6alZc6AELXhrnggM2CeWSXHGOdX2YtwA==}
     engines: {node: '>= 6'}
@@ -2388,6 +2411,14 @@ packages:
       es5-ext: 0.10.62
     dev: false
 
+  /lucide-svelte@0.214.0(svelte@3.59.0):
+    resolution: {integrity: sha512-Zho0Smm/rqx788JPnEV9SUxW2NkT5tmfOwaXTuCtYUHTJAUdirNIABoNJp1WH4u1DZODV/A9rHncgKPojF8Wyg==}
+    peerDependencies:
+      svelte: ^3.49.0
+    dependencies:
+      svelte: 3.59.0
+    dev: true
+
   /magic-string@0.27.0:
     resolution: {integrity: sha512-8UnnX2PeRAPZuN12svgR9j7M1uWMovg/CEnIwIG0LFkXSJJe4PdfUGiTGl8V9bsBHFUtfVINcSyYxd7q+kx9fA==}
     engines: {node: '>=12'}
@@ -2527,6 +2558,10 @@ packages:
     resolution: {integrity: sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==}
     engines: {node: '>=10'}
     hasBin: true
+    dev: true
+
+  /moment@2.29.4:
+    resolution: {integrity: sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==}
     dev: true
 
   /mri@1.2.0:
@@ -3029,16 +3064,6 @@ packages:
       has-flag: 4.0.0
     dev: true
 
-  /svelte-chartjs@3.1.2(chart.js@4.3.0)(svelte@3.59.0):
-    resolution: {integrity: sha512-3+6gY2IJ9Ua8R9pk3iS1ypa7Z9OoXCJb9oPwIfTp7caJM+X+RrWnH2CTkGAq7FeSxc2nnmW08tYN88Q8Y+5M+w==}
-    peerDependencies:
-      chart.js: ^3.5.0 || ^4.0.0
-      svelte: ^3.45.0
-    dependencies:
-      chart.js: 4.3.0
-      svelte: 3.59.0
-    dev: false
-
   /svelte-check@3.3.1(postcss@8.4.23)(svelte@3.59.0):
     resolution: {integrity: sha512-+Yb1F50M76JRPdZlxB8/blg75GiqKH/8QJTNtC3cKvxCbrRK7zpgmOg2oxem9n4eDAIllesm74guR3AnlAtNVg==}
     hasBin: true
@@ -3141,6 +3166,7 @@ packages:
   /svelte@3.59.0:
     resolution: {integrity: sha512-Di1wVPwdWriw5pSyInMRpr5EZmwrzKxtDKv5aXu8A/WDUi59Y5bIvl42eLef0x1vwz+ZtrjdnT8nXir2bDqR/A==}
     engines: {node: '>= 8'}
+    dev: true
 
   /tar-fs@2.1.1:
     resolution: {integrity: sha512-V0r2Y9scmbDRLCNex/+hYzvp/zyYjvFbHPNgVTKfQvVrb6guiE/fxP+XblDNR011utopbkex2nM4dHNV6GDsng==}
