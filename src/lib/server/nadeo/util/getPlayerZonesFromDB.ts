@@ -55,7 +55,7 @@ export async function getPlayerZonesFromDB(...accountIds: string[]) {
         const newDatabaseBatch: NewPlayer[] = [];
 
         for (let i = 0; i < Math.ceil(accountIdQueue.size / 200); i++) {
-            console.log(
+            console.debug(
                 `Had to retrieve ${accountIdQueue.size} account from Nadeo. ${Math.ceil(
                     accountIdQueue.size / 200
                 )} requests left`
