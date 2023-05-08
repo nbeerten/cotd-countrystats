@@ -17,8 +17,8 @@ export async function load({ fetch, params }) {
 
     const zonesResponse = (await fetch('/api/getZones').then((res) => res.json())) as ZonesResponse;
 
-    const streamedData = async () => {
-        try {
+    // const streamedData = async () => {
+        // try {
             const NadeoClubClient = await NadeoClub;
 
             // also possible with 'all' option in getFullCompetitionLeaderboard function, but this prevents a duplicate request because information is used in webpage as well
@@ -42,21 +42,24 @@ export async function load({ fetch, params }) {
             const countryCount = countCountries(zonesResponse, playersWithZones);
             const averageRankData = averageRank(playerList);
 
-            return {
-                compInfo,
-                averageRankData,
-                countryCount,
-            };
-        } catch (err) {
-            // @ts-expect-error TODO
-            throw error(500, err.message);
-        }
-    };
+            // return {
+            //     compInfo,
+            //     averageRankData,
+            //     countryCount,
+            // };
+        // } catch (err) {
+        //     // @ts-expect-error TODO
+        //     throw error(500, err.message);
+        // }
+    // };
 
     return {
         id,
-        streamed: {
-            data: new Promise<ReturnType<typeof streamedData>>((fulfil) => fulfil(streamedData())),
-        },
+        compInfo,
+        averageRankData,
+        countryCount,
+        // streamed: {
+            // data: new Promise<ReturnType<typeof streamedData>>((fulfil) => fulfil(streamedData())),
+        // },
     };
 }
