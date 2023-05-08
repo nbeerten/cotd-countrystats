@@ -19,6 +19,10 @@
     <title>COTD CountryStats</title>
 </svelte:head>
 
+<div class="mb-2 flex gap-2 font-medium">
+    <a href="/" class="underline">Home</a>
+</div>
+
 <div>
     <h1 class="text-4xl font-bold">COTD Countrystats</h1>
     <p class="text-lg font-medium mb-6">

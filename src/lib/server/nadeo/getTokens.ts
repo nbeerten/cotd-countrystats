@@ -27,6 +27,8 @@ export async function getTokens(
 ) {
     const UBISOFT_TICKET = `UBISOFT_AUTH_RES`;
     const NADEO_TOKEN = `NADEO_TOKEN_${audience.toUpperCase()}`;
+    // const NADEO_ACCESS_TOKEN = `NADEO_ACCESS_TOKEN_${audience.toUpperCase()}`;
+    // const NADEO_REFRESH_TOKEN = `NADEO_REFRESH_TOKEN_${audience.toUpperCase()}`;
 
     if (await kv.exists(NADEO_TOKEN)) {
         const tokenFromKv = await kv.get<Tokens>(NADEO_TOKEN);
@@ -45,7 +47,7 @@ export async function getTokens(
 
     if (await kv.exists(UBISOFT_RATELIMIT_ENDSAT)) {
         const endsAt = await kv.get<number>(UBISOFT_RATELIMIT_ENDSAT);
-        if (endsAt > Date.now()) {
+        if (endsAt && endsAt > Date.now()) {
             throw new Error(
                 `Ubisoft rate limit reached. Rate limit ends at ${new Date(
                     endsAt
@@ -68,7 +70,7 @@ export async function getTokens(
         console.warn('Had to fetch Ubisoft ticket from Ubisoft API.');
         const ubisoftPreventRateLimit = await kv.get<number>(UBISOFT_PREVENT_RATELIMIT_ENDSAT);
 
-        if (ubisoftPreventRateLimit > Date.now()) {
+        if (ubisoftPreventRateLimit && ubisoftPreventRateLimit > Date.now()) {
             throw new Error(
                 `Prevent-rate-limit system rate limit reached. Block ends at ${new Date(
                     ubisoftPreventRateLimit
@@ -152,6 +154,14 @@ export async function getTokens(
             cause: tokens,
         });
     }
+
+    // await kv.set(NADEO_ACCESS_TOKEN, tokens.accessToken, {
+    //     ex: 60 * 55, // 1 hour
+    // });
+
+    // await kv.set(NADEO_REFRESH_TOKEN, tokens.refreshToken, {
+
+    // })
 
     await kv.set(NADEO_TOKEN, tokens, {
         ex: 60 * 55, // 55 minutes

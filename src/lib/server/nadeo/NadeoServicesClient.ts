@@ -1,10 +1,15 @@
 import { NadeoClient } from './NadeoClient';
+import { z } from 'zod';
 
-export type PlayerZonesResponse = {
-    accountId: string;
-    timestamp: string;
-    zoneId: string;
-}[];
+export type PlayerZonesResponse = z.infer<typeof PlayerZonesSchema>;
+
+export const PlayerZonesSchema = z.array(
+    z.object({
+        accountId: z.string().uuid(),
+        timestamp: z.string(),
+        zoneId: z.string().uuid(),
+    })
+);
 
 export type ZonesResponse = {
     icon: string;
@@ -35,7 +40,13 @@ export class NadeoServicesClient extends NadeoClient {
             },
         });
 
-        return (await playerZonesRes.json()) as PlayerZonesResponse;
+        const validatedResponse = PlayerZonesSchema.safeParse(await playerZonesRes.json());
+
+        if (!validatedResponse.success) {
+            throw new Error(validatedResponse.error.message);
+        }
+
+        return validatedResponse.data;
     }
 
     public async getZones() {

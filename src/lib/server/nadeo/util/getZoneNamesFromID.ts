@@ -22,8 +22,19 @@ function getZoneObjectFromZoneID(
     zones: ZonesResponse,
     zoneId: string,
     previous: FlatArray<ZonesResponse, 0>[] = []
-) {
+): ParsedPlayerZones {
     const zone = zones.find((zone) => zone.zoneId === zoneId);
+
+    if(!zone) {
+        return {
+            world: null,
+            continent: null,
+            country: null,
+            region: null,
+            district: null,
+        };
+    }
+
     previous.unshift(zone);
 
     if (!zone.parentId || zone.parentId === zone.zoneId) {

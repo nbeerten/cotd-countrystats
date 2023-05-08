@@ -48,6 +48,7 @@ export async function load({ fetch, params }) {
                 countryCount,
             };
         } catch (err) {
+            // @ts-expect-error TODO
             throw error(500, err.message);
         }
     };

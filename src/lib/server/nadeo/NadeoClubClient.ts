@@ -1,71 +1,82 @@
 import { NadeoClient } from './NadeoClient';
+import { z } from 'zod';
 
-export type CompetitionLeaderboardResponse = {
-    participant: string;
-    rank: number;
-    score: number;
-    zone: string;
-}[];
+export type CompetitionLeaderboardResponse = z.infer<typeof CompetitionLeaderboardSchema>;
 
-export type CompetitionResponse = {
-    id: number;
-    liveId: string;
-    creator: string;
-    name: string;
-    participantType: string;
-    description: string;
-    registrationStart: unknown;
-    registrationEnd: unknown;
-    startDate: number;
-    endDate: number;
-    matchesGenerationDate: number;
-    nbPlayers: number;
-    spotStructure: string;
-    leaderboardId: number;
-    manialink: unknown;
-    rulesUrl: string | null;
-    streamUrl: string | null;
-    websiteUrl: string | null;
-    logoUrl: string | null;
-    verticalUrl: string | null;
-    allowedZones: Array<string>;
-    deletedOn: unknown;
-    autoNormalizeSeeds: boolean;
-    region: string;
-    autoGetParticipantSkillLevel: string;
-    matchAutoMode: string;
-    partition: string;
-};
+export const CompetitionLeaderboardSchema = z.array(
+    z.object({
+        participant: z.string().uuid(),
+        rank: z.number(),
+        score: z.number(),
+        zone: z.string(),
+    })
+);
 
-export type CompetitionsResponse = {
-    id: number;
-    liveId: string;
-    creator: string;
-    name: string;
-    participantType: string;
-    description?: string;
-    registrationStart?: number;
-    registrationEnd?: number;
-    startDate: number;
-    endDate: number;
-    matchesGenerationDate?: number;
-    nbPlayers: number;
-    spotStructure: string;
-    leaderboardId: number;
-    manialink: string | null;
-    rulesUrl: string | null;
-    streamUrl: string | null;
-    websiteUrl: string | null;
-    logoUrl: string | null;
-    verticalUrl: string | null;
-    allowedZones: Array<string>;
-    deletedOn: string | null;
-    autoNormalizeSeeds: boolean;
-    region?: string;
-    autoGetParticipantSkillLevel: string;
-    matchAutoMode: string;
-    partition: string;
-}[];
+export type CompetitionResponse = z.infer<typeof CompetitionSchema>;
+
+export const CompetitionSchema = z.object({
+    id: z.number(),
+    liveId: z.string(),
+    creator: z.string(),
+    name: z.string(),
+    participantType: z.string(),
+    description: z.string().nullable(),
+    registrationStart: z.unknown(),
+    registrationEnd: z.unknown(),
+    startDate: z.number(),
+    endDate: z.number(),
+    matchesGenerationDate: z.number(),
+    nbPlayers: z.number(),
+    spotStructure: z.string(),
+    leaderboardId: z.number(),
+    manialink: z.unknown(),
+    rulesUrl: z.string().nullable(),
+    streamUrl: z.string().nullable(),
+    websiteUrl: z.string().nullable(),
+    logoUrl: z.string().nullable(),
+    verticalUrl: z.string().nullable(),
+    allowedZones: z.array(z.string()),
+    deletedOn: z.unknown(),
+    autoNormalizeSeeds: z.boolean(),
+    region: z.string(),
+    autoGetParticipantSkillLevel: z.string(),
+    matchAutoMode: z.string(),
+    partition: z.string(),
+});
+
+export type CompetitionsResponse = z.infer<typeof CompetitionsSchema>;
+
+export const CompetitionsSchema = z.array(
+    z.object({
+        id: z.number(),
+        liveId: z.string(),
+        creator: z.string(),
+        name: z.string(),
+        participantType: z.string(),
+        description: z.string().nullable(),
+        registrationStart: z.unknown(),
+        registrationEnd: z.unknown(),
+        startDate: z.number(),
+        endDate: z.number(),
+        matchesGenerationDate: z.number().nullable(),
+        nbPlayers: z.number(),
+        spotStructure: z.string(),
+        leaderboardId: z.number(),
+        manialink: z.unknown(),
+        rulesUrl: z.string().nullable(),
+        streamUrl: z.string().nullable(),
+        websiteUrl: z.string().nullable(),
+        logoUrl: z.string().nullable(),
+        verticalUrl: z.string().nullable(),
+        allowedZones: z.array(z.string()),
+        deletedOn: z.unknown(),
+        autoNormalizeSeeds: z.boolean(),
+        region: z.string().nullable(),
+        autoGetParticipantSkillLevel: z.string(),
+        matchAutoMode: z.string(),
+        partition: z.string(),
+    })
+);
 
 export type CompetitionRoundsResponse = unknown;
 
@@ -90,7 +101,15 @@ export class NadeoClubClient extends NadeoClient {
             }
         );
 
-        return (await competitionLeaderboardRes.json()) as CompetitionLeaderboardResponse;
+        const validatedResponse = CompetitionLeaderboardSchema.safeParse(
+            await competitionLeaderboardRes.json()
+        );
+
+        if (!validatedResponse.success) {
+            throw new Error(validatedResponse.error.message);
+        }
+
+        return validatedResponse.data;
     }
 
     public async getCompetition(competitionId: string | number) {
@@ -105,7 +124,13 @@ export class NadeoClubClient extends NadeoClient {
             }
         );
 
-        return (await competitionRes.json()) as CompetitionResponse;
+        const validatedResponse = CompetitionSchema.safeParse(await competitionRes.json());
+
+        if (!validatedResponse.success) {
+            throw new Error(validatedResponse.error.message);
+        }
+
+        return validatedResponse.data;
     }
 
     public async getCompetitions(length = 10, offset = 0) {
@@ -120,7 +145,13 @@ export class NadeoClubClient extends NadeoClient {
             }
         );
 
-        return (await competitionsRes.json()) as CompetitionsResponse;
+        const validatedResponse = CompetitionsSchema.safeParse(await competitionsRes.json());
+
+        if (!validatedResponse.success) {
+            throw new Error(validatedResponse.error.message);
+        }
+
+        return validatedResponse.data;
     }
 
     public async getCompetitionRounds(competitionId: string | number) {
