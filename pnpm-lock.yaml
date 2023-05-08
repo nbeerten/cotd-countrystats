@@ -13,6 +13,9 @@ dependencies:
   '@vercel/kv':
     specifier: ^0.1.2
     version: 0.1.2
+  chartjs-plugin-datalabels:
+    specifier: ^2.2.0
+    version: 2.2.0(chart.js@4.3.0)
   drizzle-kit:
     specifier: ^0.17.6
     version: 0.17.6
@@ -443,7 +446,6 @@ packages:
 
   /@kurkle/color@0.3.2:
     resolution: {integrity: sha512-fuscdXJ9G1qb7W8VdHi+IwRqij3lBkosAm4ydQtEmbY58OzHXqQhvlxqEkoz0yssNVn38bcpRWgA9PP+OGoisw==}
-    dev: true
 
   /@libsql/client@0.1.4:
     resolution: {integrity: sha512-ZkHEIIhAa8dIM3Zbzfs0N2btsh9P27nFd+jHz5H2rgUWXbfZCYQDMDsWUH1x81oqvX3rm2aZKeIChRrnOSrWNw==}
@@ -1213,7 +1215,14 @@ packages:
     engines: {pnpm: '>=7'}
     dependencies:
       '@kurkle/color': 0.3.2
-    dev: true
+
+  /chartjs-plugin-datalabels@2.2.0(chart.js@4.3.0):
+    resolution: {integrity: sha512-14ZU30lH7n89oq+A4bWaJPnAG8a7ZTk7dKf48YAzMvJjQtjrgg5Dpk9f+LbjCF6bpx3RAGTeL13IXpKQYyRvlw==}
+    peerDependencies:
+      chart.js: '>=3.0.0'
+    dependencies:
+      chart.js: 4.3.0
+    dev: false
 
   /chokidar@3.5.3:
     resolution: {integrity: sha512-Dr3sfKRP6oTcjf2JmUmFJfeVMvXBdegxB0iVQ5eb2V10uFJUCAS8OByZdVAyVb8xXNz3GjjTgj9kLWsZTqE6kw==}

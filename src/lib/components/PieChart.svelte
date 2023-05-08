@@ -1,8 +1,9 @@
 <script lang="ts">
     import { Chart, registerables } from 'chart.js';
+    import ChartDataLabels from 'chartjs-plugin-datalabels';
     import { onMount } from 'svelte';
 
-    Chart.register(...registerables);
+    Chart.register(...registerables, ChartDataLabels);
 
     let chartElement: HTMLCanvasElement;
 
@@ -36,7 +37,7 @@
             {
                 label: label,
                 data: processData(data).data,
-            },
+            }
         ],
     };
 
@@ -56,6 +57,25 @@
                             color: 'rgb(200, 200, 200)',
                         },
                     },
+                    datalabels: {
+                        formatter: function(value, context) {
+                            if(!context.chart.data.labels) return;
+                            return (context.chart.data.labels[context.dataIndex] as string) + ': ' + value;
+                        },
+                        anchor: 'end',
+                        clamp: true,
+                        display: function() {
+                            return screen.width < 768 ? false : 'auto';
+                        },
+                        color: 'rgb(10, 10, 10)',
+                        align: 'start',
+                        offset: 10,
+                        font: {
+                            family: "Satoshi-Variable",
+                            size: 11,
+                            weight: 600,
+                        }                        
+                    }
                 },
             },
         });
