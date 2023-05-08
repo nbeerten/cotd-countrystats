@@ -96,7 +96,7 @@ export async function getPlayerZonesFromDB(...accountIds: string[]) {
             });
 
             if (i !== iterationsNeeded - 1) {
-                await new Promise((r) => setTimeout(r, 3000));
+                await new Promise((r) => setTimeout(r, 500));
             }
         }
 
