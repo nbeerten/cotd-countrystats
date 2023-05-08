@@ -35,10 +35,7 @@ export function combineLeaderboardAndZonesData(
             return;
         }
 
-        const zoneNames = getZoneNamesFromID(
-            zonesResponse,
-            playerZone.zoneId
-        );
+        const zoneNames = getZoneNamesFromID(zonesResponse, playerZone.zoneId);
         player.world = zoneNames.world;
         player.continent = zoneNames.continent;
         player.country = zoneNames.country;

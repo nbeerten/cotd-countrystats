@@ -38,7 +38,7 @@ export const CompetitionSchema = z.object({
     allowedZones: z.array(z.string()),
     deletedOn: z.unknown(),
     autoNormalizeSeeds: z.boolean(),
-    region: z.string(),
+    region: z.string().nullable(),
     autoGetParticipantSkillLevel: z.string(),
     matchAutoMode: z.string(),
     partition: z.string(),

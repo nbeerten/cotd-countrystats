@@ -25,7 +25,7 @@ function getZoneObjectFromZoneID(
 ): ParsedPlayerZones {
     const zone = zones.find((zone) => zone.zoneId === zoneId);
 
-    if(!zone) {
+    if (!zone) {
         return {
             world: null,
             continent: null,

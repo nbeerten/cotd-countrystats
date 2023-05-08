@@ -22,9 +22,7 @@ export type ZonesResponse = {
 export class NadeoServicesClient extends NadeoClient {
     public async getPlayerZones(...accountIds: string[]) {
         const accountIdList = accountIds.join(',');
-        const requestUrl = `https://prod.trackmania.core.nadeo.online/accounts/zones/?accountIdList=${encodeURIComponent(
-            accountIdList
-        )}`;
+        const requestUrl = `https://prod.trackmania.core.nadeo.online/accounts/zones/?accountIdList=${accountIdList}`;
 
         if (requestUrl.length >= 8220) {
             throw new Error(

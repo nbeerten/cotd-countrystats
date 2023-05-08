@@ -53,16 +53,17 @@ export async function getPlayerZonesFromDB(...accountIds: string[]) {
     if (accountIdQueue.size > 0) {
         const databaseBatch = [];
         const newDatabaseBatch: NewPlayer[] = [];
+        const iterationsNeeded = Math.ceil(accountIdQueue.size / 200);
 
-        for (let i = 0; i < Math.ceil(accountIdQueue.size / 200); i++) {
+        for (let i = 0; i < iterationsNeeded; i++) {
             console.debug(
                 `Had to retrieve ${accountIdQueue.size} account from Nadeo. ${Math.ceil(
                     accountIdQueue.size / 200
                 )} requests left`
             );
-            const offset = i * 200;
+            // const offset = i * 200;
             const accountIdQueueArray = Array.from(accountIdQueue);
-            const groupOfAccountIds = accountIdQueueArray.slice(offset, offset + 200);
+            const groupOfAccountIds = accountIdQueueArray.slice(0, 200);
             const res = await NadeoServicesClient.getPlayerZones(...groupOfAccountIds);
 
             res.forEach((player) => {
@@ -94,8 +95,8 @@ export async function getPlayerZonesFromDB(...accountIds: string[]) {
                 newDatabaseBatch.push(newPlayer);
             });
 
-            if (i !== Math.ceil(accountIdQueue.size / 200) - 1) {
-                await new Promise((r) => setTimeout(r, 500));
+            if (i !== iterationsNeeded - 1) {
+                await new Promise((r) => setTimeout(r, 3000));
             }
         }
 

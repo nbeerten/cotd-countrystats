@@ -3,16 +3,16 @@
     // import type { ChartData } from "chart.js";
 
     export let data;
-    const { id, compInfo, countryCount, averageRankData } = data;
+    const { id, streamed } = data;
 </script>
 
 <div>
-    <!-- {#await streamed.data}
+    {#await streamed.data}
         <h1 class="text-4xl font-bold">
             Loading data for competition {id}...
         </h1>
         <p class="text-lg font-medium">Might take a couple of seconds to load...</p>
-    {:then data} -->
+    {:then data}
         <h1 class="text-4xl font-bold">
             {data.compInfo.name}
         </h1>
@@ -37,8 +37,8 @@
                 </p>
             </div>
         </details>
-    <!-- {:catch error}
+    {:catch error}
         <p>Something went wrong...</p>
         <p class="text-2xl font-bold">{error.message}</p>
-    {/await} -->
+    {/await}
 </div>

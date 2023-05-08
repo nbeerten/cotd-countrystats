@@ -7,12 +7,12 @@ export function countCountries(
 ) {
     const countryCount: Record<string, number> = {};
     for (const [, player] of playersWithZones.entries()) {
-        if(!player.zoneId) {
+        if (!player.zoneId) {
             continue;
         }
         const playerZones = getZoneNamesFromID(zonesResponse, player.zoneId);
 
-        if(!playerZones.country) {
+        if (!playerZones.country) {
             continue;
         }
 
