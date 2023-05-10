@@ -10,3 +10,13 @@ export const Players = sqliteTable('players', {
 
 export type Player = InferModel<typeof Players>;
 export type NewPlayer = InferModel<typeof Players, 'insert'>;
+
+export const Zones = sqliteTable('zones', {
+    zoneId: text('zone_id').primaryKey().notNull(),
+    parentId: text('parent_id'),
+    name: text('name'),
+    icon: text('icon'),
+});
+
+export type Zone = InferModel<typeof Zones>;
+export type NewZone = InferModel<typeof Zones, 'insert'>;

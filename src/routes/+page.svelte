@@ -19,7 +19,7 @@
 </script>
 
 <svelte:head>
-    <title>COTD CountryStats</title>
+    <title>COTD Countrystats</title>
 </svelte:head>
 
 <div class="mb-2 flex gap-2 font-medium">
