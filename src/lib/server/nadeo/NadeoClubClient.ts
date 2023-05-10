@@ -25,7 +25,7 @@ export const CompetitionSchema = z.object({
     registrationEnd: z.unknown(),
     startDate: z.number(),
     endDate: z.number(),
-    matchesGenerationDate: z.number(),
+    matchesGenerationDate: z.number().nullable(),
     nbPlayers: z.number(),
     spotStructure: z.string(),
     leaderboardId: z.number(),

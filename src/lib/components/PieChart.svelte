@@ -37,7 +37,7 @@
             {
                 label: label,
                 data: processData(data).data,
-            }
+            },
         ],
     };
 
@@ -58,24 +58,28 @@
                         },
                     },
                     datalabels: {
-                        formatter: function(value, context) {
-                            if(!context.chart.data.labels) return;
-                            return (context.chart.data.labels[context.dataIndex] as string) + ': ' + value;
+                        formatter: function (value, context) {
+                            if (!context.chart.data.labels) return;
+                            return (
+                                (context.chart.data.labels[context.dataIndex] as string) +
+                                ': ' +
+                                value
+                            );
                         },
                         anchor: 'end',
                         clamp: true,
-                        display: function() {
+                        display: function () {
                             return screen.width < 768 ? false : 'auto';
                         },
                         color: 'rgb(10, 10, 10)',
                         align: 'start',
                         offset: 10,
                         font: {
-                            family: "Satoshi-Variable",
+                            family: 'Satoshi-Variable',
                             size: 11,
                             weight: 600,
-                        }                        
-                    }
+                        },
+                    },
                 },
             },
         });

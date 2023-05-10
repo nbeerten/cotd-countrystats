@@ -11,13 +11,17 @@ export const PlayerZonesSchema = z.array(
     })
 );
 
-export type ZonesResponse = {
-    icon: string;
-    name: string;
-    parentId: string;
-    timestamp: string;
-    zoneId: string;
-}[];
+export type ZonesResponse = z.infer<typeof ZonesSchema>;
+
+export const ZonesSchema = z.array(
+    z.object({
+        icon: z.string(),
+        name: z.string(),
+        parentId: z.string().uuid().nullable(),
+        timestamp: z.string(),
+        zoneId: z.string().uuid(),
+    })
+);
 
 export class NadeoServicesClient extends NadeoClient {
     public async getPlayerZones(...accountIds: string[]) {
@@ -56,6 +60,12 @@ export class NadeoServicesClient extends NadeoClient {
             },
         });
 
-        return (await zonesRes.json()) as ZonesResponse;
+        const validatedResponse = ZonesSchema.safeParse(await zonesRes.json());
+
+        if (!validatedResponse.success) {
+            throw new Error(validatedResponse.error.message);
+        }
+
+        return validatedResponse.data;
     }
 }

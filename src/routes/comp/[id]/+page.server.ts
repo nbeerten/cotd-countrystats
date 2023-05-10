@@ -24,6 +24,14 @@ export async function load({ fetch, params }) {
             // also possible with 'all' option in getFullCompetitionLeaderboard function, but this prevents a duplicate request because information is used in webpage as well
             const compInfo = await NadeoClubClient.getCompetition(id);
 
+            if (compInfo.nbPlayers === 0)
+                return {
+                    compInfo: null,
+                    averageRankData: null,
+                    countryCount: null,
+                    error: 'No more competitions left',
+                };
+
             const players = await getFullCompetitionLeaderboard(
                 NadeoClubClient,
                 id,
@@ -46,6 +54,7 @@ export async function load({ fetch, params }) {
                 compInfo,
                 averageRankData,
                 countryCount,
+                error: null,
             };
         } catch (err) {
             // @ts-expect-error TODO
@@ -56,7 +65,7 @@ export async function load({ fetch, params }) {
     return {
         id,
         streamed: {
-            data: new Promise<ReturnType<typeof streamedData>>((fulfil) => fulfil(streamedData())),
+            data: streamedData(),
         },
     };
 }

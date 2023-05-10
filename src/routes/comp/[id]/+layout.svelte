@@ -1,11 +1,12 @@
 <script lang="ts">
     import { page } from '$app/stores';
     import Icon from '@krowten/svelte-heroicons/Icon.svelte';
+    import { goto } from '$app/navigation';
 </script>
 
 <div class="mb-2 flex gap-2 font-medium">
     <button
-        on:click={() => history.back()}
+        on:click={() => (history.length > 1 ? history.back() : goto('/'))}
         class="hover:underline flex gap-1 items-center bg-transparent"
         ><Icon name="arrow-left" class="h-5 w-5" /> Back</button
     >

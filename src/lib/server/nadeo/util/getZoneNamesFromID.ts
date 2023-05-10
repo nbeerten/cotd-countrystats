@@ -24,7 +24,7 @@ function getZoneObjectFromZoneID(
     previous: FlatArray<ZonesResponse, 0>[] = []
 ): ParsedPlayerZones {
     if (!('find' in zones)) {
-        console.warn(zones);
+        throw new Error('zones is not valid');
     }
     const zone = zones.find((zone) => zone.zoneId === zoneId);
 
