@@ -1,5 +1,5 @@
 import type { Tokens, Audience } from '.';
-import kv from '@vercel/kv';
+import { kv } from '@vercel/kv';
 
 export type UbisoftAuthResponse = {
     platformType: string;
