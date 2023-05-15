@@ -13,7 +13,7 @@
     $: nextPageHref = nextPage($page.url.searchParams);
     $: setTypeHref = (type: 'crossplay' | 'pc' | 'psn' | 'xbl' | 'luna') =>
         setType($page.url.searchParams, type);
-    $: curType = $page.url.searchParams.get('type');
+    $: curType = $page.url.searchParams.get('type') || 'crossplay';
 
     function previousPage(searchParams: URLSearchParams) {
         const localSearchParams = new URLSearchParams(searchParams);
