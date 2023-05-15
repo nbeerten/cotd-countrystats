@@ -7,7 +7,7 @@
     export let data;
     $: streamed = data.streamed;
 
-    $: pageNum = Number($page.url.searchParams.get('page'));
+    $: pageNum = Number($page.url.searchParams.get('page') ?? 1);
 
     $: previousPageHref = previousPage($page.url.searchParams);
     $: nextPageHref = nextPage($page.url.searchParams);
