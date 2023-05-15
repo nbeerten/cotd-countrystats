@@ -29,7 +29,7 @@ export async function load({ fetch, params }) {
                     compInfo: null,
                     averageRankData: null,
                     countryCount: null,
-                    error: 'No more competitions left',
+                    error: 'Competition has no players.',
                 };
 
             const players = await getFullCompetitionLeaderboard(
@@ -49,6 +49,11 @@ export async function load({ fetch, params }) {
 
             const countryCount = countCountries(zonesResponse, playersWithZones);
             const averageRankData = averageRank(playerList);
+
+            compInfo.partition =
+                compInfo.partition === 'crossplay' || compInfo.partition === 'luna'
+                    ? compInfo.partition.charAt(0).toUpperCase() + compInfo.partition.slice(1)
+                    : compInfo.partition.toUpperCase();
 
             return {
                 compInfo,

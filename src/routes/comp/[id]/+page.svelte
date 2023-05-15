@@ -26,12 +26,16 @@
         <p class="text-lg font-medium">Might take a couple of seconds to load...</p>
     {:then data}
         {#if data.compInfo}
-            <h1 class="text-4xl font-bold -ml-2px">
+            <h1 class="text-4xl font-bold -ml-2px truncate">
                 {data.compInfo.name}
             </h1>
             <p class="text-lg font-medium flex flex-wrap md:flex-row gap-x-6">
-                <span class="capitalize font-bold">{data.compInfo.partition}</span>
-                <span class="text-stone-400">{data.compInfo.nbPlayers} players total</span>
+                <span class="font-bold">{data.compInfo.partition}</span>
+                <span class="text-stone-400"
+                    >{data.compInfo.nbPlayers} players total ({Math.ceil(
+                        data.compInfo.nbPlayers / 64
+                    )} divisions)</span
+                >
                 <span class="text-stone-400">
                     {#if browser}
                         {new Date(data.compInfo.startDate * 1000).toLocaleDateString('en-UK')},

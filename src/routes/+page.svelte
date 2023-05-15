@@ -7,12 +7,36 @@
     export let data;
     $: streamed = data.streamed;
 
-    function previousPage(hash: string) {
-        goto(`?page=${Number($page.url.searchParams.get('page') || 1) - 1}#${hash}`);
+    $: pageNum = Number($page.url.searchParams.get('page'));
+
+    $: previousPageHref = previousPage($page.url.searchParams);
+    $: nextPageHref = nextPage($page.url.searchParams);
+    $: setTypeHref = (type: 'crossplay' | 'pc' | 'psn' | 'xbl' | 'luna') =>
+        setType($page.url.searchParams, type);
+    $: curType = $page.url.searchParams.get('type');
+
+    function previousPage(searchParams: URLSearchParams) {
+        const localSearchParams = new URLSearchParams(searchParams);
+        localSearchParams.set('page', String(pageNum - 1));
+
+        return `?${localSearchParams.toString()}`;
     }
 
-    function nextPage(hash: string) {
-        goto(`?page=${Number($page.url.searchParams.get('page') || 1) + 1}#${hash}`);
+    function nextPage(searchParams: URLSearchParams) {
+        const localSearchParams = new URLSearchParams(searchParams);
+        localSearchParams.set('page', String(pageNum + 1));
+
+        return `?${localSearchParams.toString()}`;
+    }
+
+    function setType(
+        searchParams: URLSearchParams,
+        type: 'crossplay' | 'pc' | 'psn' | 'xbl' | 'luna'
+    ) {
+        const localSearchParams = new URLSearchParams(searchParams);
+        localSearchParams.set('type', type);
+
+        return `?${localSearchParams.toString()}`;
     }
 
     let otherCompInputField: number;
@@ -35,19 +59,44 @@
 
 <div class="flex flex-col sm:flex-row gap-y-8 gap-x-12">
     <div class="flex flex-col gap-4 w-full md:w-[32ch]">
-        <hgroup>
-            <h2 class="text-2xl font-bold">COTD (Crossplay)</h2>
-            <p>
-                <i
-                    >The "main" COTD for all platforms, available for players with crossplay
-                    enabled.</i
+        <div>
+            <h2 class="text-2xl font-bold">COTD</h2>
+            <div class="flex gap-4">
+                <a
+                    href={setTypeHref('crossplay')}
+                    class="hover:underline"
+                    class:font-extrabold={curType === 'crossplay'}>Crossplay</a
                 >
-            </p>
-        </hgroup>
+                <a
+                    href={setTypeHref('pc')}
+                    class="hover:underline"
+                    class:font-extrabold={curType === 'pc'}>PC</a
+                >
+                <a
+                    href={setTypeHref('psn')}
+                    class="hover:underline"
+                    class:font-extrabold={curType === 'psn'}>Playstation</a
+                >
+                <a
+                    href={setTypeHref('xbl')}
+                    class="hover:underline"
+                    class:font-extrabold={curType === 'xbl'}>Xbox</a
+                >
+                <a
+                    href={setTypeHref('luna')}
+                    class="hover:underline"
+                    class:font-extrabold={curType === 'luna'}>Luna</a
+                >
+            </div>
+        </div>
         <div class="flex flex-col gap-2">
             {#await streamed.data}
                 <p>Loading data...</p>
             {:then data}
+                {#if data.cotdList.length === 0}
+                    <p><i>No competitions with at least 1 players found</i></p>
+                {/if}
+
                 {#each data.cotdList as cotd, i}
                     <div
                         class="flex gap-2 justify-between items-center h-[2.05lh]"
@@ -77,16 +126,15 @@
             {/await}
         </div>
         <div class="flex gap-4 justify-between">
-            <button
-                on:click={() => previousPage('crossplay')}
-                disabled={Number($page.url.searchParams.get('page') || 1) == 1}
-                class="not-disabled:hover:underline not-disabled:cursor-pointer bg-transparent disabled:text-stone-500"
-                role="link">Previous page</button
-            >
-            <button
-                on:click={() => nextPage('crossplay')}
-                class="hover:underline cursor-pointer bg-transparent"
-                role="link">Next page</button
+            {#if pageNum > 1}
+                <a href={previousPageHref} class="hover:underline cursor-pointer bg-transparent"
+                    >Previous page</a
+                >
+            {:else}
+                <span class="text-stone-500 cursor-not-allowed">Previous page</span>
+            {/if}
+            <a href={nextPageHref} class="hover:underline cursor-pointer bg-transparent"
+                >Next page</a
             >
         </div>
     </div>
