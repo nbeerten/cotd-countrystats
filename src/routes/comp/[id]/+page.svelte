@@ -29,7 +29,7 @@
             <h1 class="text-4xl font-bold -ml-2px">
                 {data.compInfo.name}
             </h1>
-            <p class="text-lg font-medium flex gap-6">
+            <p class="text-lg font-medium flex flex-wrap md:flex-row gap-x-6">
                 <span class="capitalize font-bold">{data.compInfo.partition}</span>
                 <span class="text-stone-400">{data.compInfo.nbPlayers} players total</span>
                 <span class="text-stone-400">

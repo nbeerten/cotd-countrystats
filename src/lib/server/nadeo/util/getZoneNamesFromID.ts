@@ -1,4 +1,5 @@
 import type { ZonesResponse } from '..';
+import ISO_to_IOC from '../../../ISO_to_IOC_map.json';
 
 export interface ParsedPlayerZone {
     zoneId: string;
@@ -10,10 +11,15 @@ export interface ParsedPlayerZones {
     country: ParsedPlayerZone | null;
     region: ParsedPlayerZone | null;
     district: ParsedPlayerZone | null;
+    ISO?: string | null;
 }
 
 export function getZoneNamesFromID(zonesResponse: ZonesResponse, zoneID: string) {
     const zones = getZoneObjectFromZoneID(zonesResponse, zoneID) as ParsedPlayerZones;
+
+    const IOC = zonesResponse.find((zone) => zones.country?.name === zone.name)?.icon.slice(19, -4);
+    const ISO = Object.entries(ISO_to_IOC).find(([, value]) => value === IOC)?.[0] ?? null;
+    zones['ISO'] = ISO ?? IOC;
 
     return zones;
 }

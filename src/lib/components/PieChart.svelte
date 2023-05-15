@@ -69,6 +69,13 @@
                                 };
                             },
                         },
+                        titleFont: {
+                            family: 'Satoshi-Variable, "Twemoji Country Flags"',
+                        },
+                        bodyFont: {
+                            family: 'Satoshi-Variable',
+                            weight: '500',
+                        },
                     },
                     datalabels: {
                         labels: {
@@ -78,8 +85,15 @@
                         formatter: function (value, context) {
                             if (!context.chart.data.labels) return;
                             if (!context.chart.data.datasets[0].data) return;
-                            return [
-                                context.chart.data.labels[context.dataIndex],
+
+                            const countryTitle =
+                                context.chart.data.labels[context.dataIndex] === 'Other'
+                                    ? context.chart.data.labels[context.dataIndex]
+                                    : (
+                                          context.chart.data.labels[context.dataIndex] as string
+                                      ).slice(0, 4);
+
+                            const percentage =
                                 Math.round(
                                     (value /
                                         (context.chart.data.datasets[0].data.reduce(
@@ -87,22 +101,25 @@
                                             0
                                         ) as number)) *
                                         100
-                                ) + '%',
-                            ];
+                                ) + '%';
+
+                            return `${countryTitle}  ${percentage}`;
                         },
                         anchor: 'end',
                         align: 'start',
-                        clamp: true,
-                        display: function () {
-                            return screen.width < 768 ? false : 'auto';
-                        },
                         color: 'rgb(240, 240, 240)',
                         backgroundColor: '#1c1917',
-                        textAlign: 'end',
+                        textAlign: 'center',
+                        padding: {
+                            top: 2,
+                            bottom: 2,
+                            left: 4,
+                            right: 4,
+                        },
                         offset: 10,
                         font: {
-                            family: 'Satoshi-Variable',
-                            size: 10,
+                            family: 'Satoshi-Variable, "Twemoji Country Flags"',
+                            size: 13,
                             weight: 700,
                         },
                         borderRadius: 4,

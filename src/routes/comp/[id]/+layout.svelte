@@ -17,3 +17,10 @@
 </div>
 
 <slot />
+
+<style>
+    @font-face {
+        font-family: 'Twemoji Country Flags';
+        src: url('/fonts/TwemojiCountryFlags.woff2') format('woff2');
+    }
+</style>

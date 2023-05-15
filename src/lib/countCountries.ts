@@ -1,5 +1,6 @@
 import type { ZonesResponse } from '$lib/server/nadeo';
 import { getZoneNamesFromID, type getPlayerZonesFromDB } from '$lib/server/nadeo/util';
+import ISO_to_flag from '$lib/ISO_to_flag_map.json';
 
 export function countCountries(
     zonesResponse: ZonesResponse,
@@ -16,7 +17,10 @@ export function countCountries(
             continue;
         }
 
-        const country = playerZones.country.name;
+        const flag = playerZones.ISO
+            ? (ISO_to_flag as Record<string, string>)[playerZones.ISO] ?? playerZones.ISO
+            : playerZones.ISO;
+        const country = `${flag} ${playerZones.country.name}`;
         countryCount[country] = (countryCount[country] || 0) + 1;
     }
 
