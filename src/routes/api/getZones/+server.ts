@@ -3,6 +3,13 @@ import { createClient } from '@libsql/client/web';
 import { drizzle } from 'drizzle-orm/libsql';
 import { Zones, type NewZone } from '$lib/db/schema';
 import { TURSO_DB_URL, TURSO_DB_AUTH_TOKEN } from '$env/static/private';
+import type { ServerlessConfig } from '@sveltejs/adapter-vercel';
+
+export const config: ServerlessConfig = {
+    isr: {
+        expiration: 60 * 60 * 24 * 31,
+    },
+};
 
 export async function GET() {
     const libSQL = createClient({

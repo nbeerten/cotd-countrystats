@@ -7,6 +7,13 @@ import { countCountries } from '$lib/countCountries';
 import { averageRank } from '$lib/averageRank';
 import { NadeoClub, type ZonesResponse } from '$lib/server/nadeo';
 import { error } from '@sveltejs/kit';
+import type { ServerlessConfig } from '@sveltejs/adapter-vercel';
+
+export const config: ServerlessConfig = {
+    isr: {
+        expiration: false,
+    },
+};
 
 export async function load({ fetch, params }) {
     const id = params.id;

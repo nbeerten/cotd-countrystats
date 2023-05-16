@@ -1,5 +1,13 @@
 import { NadeoClub } from '$lib/server/nadeo';
 import { error } from '@sveltejs/kit';
+import type { ServerlessConfig } from '@sveltejs/adapter-vercel';
+
+export const config: ServerlessConfig = {
+    isr: {
+        expiration: 60 * 60, // 1 hour
+        allowQuery: ['page', 'type'],
+    },
+};
 
 export async function load({ url }) {
     const page = Number(url.searchParams.get('page') || 1) - 1;
